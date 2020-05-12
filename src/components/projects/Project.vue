@@ -54,7 +54,7 @@ export default {
     register (id) {
       const user = this.$store.getters.user
       if (user === null || user === undefined) {
-        this.$store.dispatch('setMessage', 'Please log in to register')
+        this.$store.dispatch('getMessage', 'Please login to register')
       } else {
         this.$store.dispatch('registerUser', id)
       }
