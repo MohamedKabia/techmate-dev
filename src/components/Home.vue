@@ -196,7 +196,6 @@ export default {
     copy () {
       let txurl = document.querySelector('#txurl')
       txurl.setAttribute('type', 'text')
-      console.log(txurl)
       txurl.select()
 
       try {

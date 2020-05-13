@@ -98,7 +98,6 @@ export default {
       })
     },
     onDismissed () {
-      console.log('dismissed')
       this.$store.dispatch('getMessage', null)
     }
   },

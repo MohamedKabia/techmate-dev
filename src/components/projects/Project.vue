@@ -58,7 +58,6 @@ export default {
       } else {
         this.$store.dispatch('registerUser', id)
       }
-      console.log(id)
     }
   }
 }

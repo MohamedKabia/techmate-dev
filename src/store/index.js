@@ -23,11 +23,9 @@ export default new Vuex.Store({
     },
     setRegisteredProjects (state, payload) {
       state.registeredProjects.push(payload)
-      console.log('commited')
     },
     setLikedProjects (state, payload) {
       state.likedProjects.push(payload)
-      console.log(state.likedProjects)
     },
     setUser (state, payload) {
       state.user = payload
@@ -72,7 +70,6 @@ export default new Vuex.Store({
 
       if (index > -1) {
         likedProjects.splice(index, 1)
-        console.log(this.state.likedProjects)
         firebase.database().ref('projects').child(id).once('value')
           .then(data => {
             let project = data.val()
@@ -81,7 +78,6 @@ export default new Vuex.Store({
           })
       } else {
         commit('setLikedProjects', id)
-        console.log('in else', this.state.likedProjects)
         firebase.database().ref('projects').child(id).once('value')
           .then(data => {
             let project = data.val()
@@ -93,7 +89,6 @@ export default new Vuex.Store({
         firebase.auth().onAuthStateChanged((user) => {
           if (user) {
             let userId = user.uid
-            console.log('try', likedProjects)
             firebase.database().ref('projects').child(userId).update({ likes: like })
             firebase.database().ref('likedProjects').child(userId)
               .update(likedProjects)
@@ -149,9 +144,7 @@ export default new Vuex.Store({
       firebase.auth().onAuthStateChanged((user) => {
         if (user) {
           commit('setUser', user)
-          console.log('confirm')
           const uid = user.uid
-          console.log('user is', user, uid)
           if (user === null || user === undefined) {
             commit('setMessage', 'please login')
           }
@@ -173,14 +166,9 @@ export default new Vuex.Store({
           firebase.database().ref('regisreredProjects').child(uid).once('value')
             .then(data => {
               let regisreredProjects = data.val()
-              console.log(regisreredProjects)
               for (let project in regisreredProjects) {
-                console.log(regisreredProjects[project])
                 commit('setRegisteredProjects', regisreredProjects[project])
               }
-            })
-            .catch(error => {
-              console.log('error', error)
             })
 
           firebase.database().ref('likedProjects').child(uid).once('value')
@@ -189,9 +177,6 @@ export default new Vuex.Store({
               for (let like in likeds) {
                 commit('setLikedProjects', likeds[like])
               }
-            })
-            .catch(error => {
-              console.log('error', error)
             })
         }
       })
@@ -206,7 +191,6 @@ export default new Vuex.Store({
               commit('setProfile', profileData)
             })
             .catch(error => {
-              console.log('error', error)
               commit('setMessage', error.message)
             })
         }
@@ -242,7 +226,6 @@ export default new Vuex.Store({
           commit('setLoadedProjects', projects)
         })
         .catch(error => {
-          console.log('error', error)
           commit('setLoading', false)
           commit('setMessage', error.message)
         })
@@ -273,23 +256,18 @@ export default new Vuex.Store({
       const index = registeredProjects.indexOf(id)
       if (index > -1) {
         let project = this.state.registeredProjects.splice(index, 1)
-        console.log(this.state.registeredProjects)
         update(project)
       } else {
         commit('setRegisteredProjects', id)
-        console.log('in else', this.state.registeredProjects)
         update(this.state.registeredProjects)
       }
       function update (regproject) {
-        console.log(userId)
-        console.log('try', registeredProjects)
         firebase.database().ref('regisreredProjects').child(userId)
           .set({ registeredProjects: regproject })
           .then(() => {
             commit('setMessage', 'registerd sucessfully')
           })
           .catch(error => {
-            console.log('error', error)
             commit('setMesage', 'error:', error.message)
           })
       }
@@ -378,7 +356,6 @@ export default new Vuex.Store({
       commit('setLoading', true)
       firebase.auth().signInWithEmailAndPassword(payload.email, payload.password)
         .then(user => {
-          console.log(user)
           commit('clareError', null)
           commit('setLoading', false)
           const newUser = {
@@ -411,7 +388,6 @@ export default new Vuex.Store({
       const uid = this.state.user.uid
       firebase.database().ref('calEvents').child(uid).once('value')
         .then(data => {
-          console.log('fuck')
           let events = []
           const eventsdata = data.val()
           for (let eve in eventsdata) {
@@ -453,7 +429,6 @@ export default new Vuex.Store({
     addCalEvent ({ commit }, payload) {
       const data = payload
       const uid = this.state.user.uid
-      console.log('payload', payload)
       firebase.database().ref('calEvents').child(uid).push(data)
         .then(() => {
           commit('setMessage', 'Added successfully')

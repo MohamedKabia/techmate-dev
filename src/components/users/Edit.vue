@@ -138,7 +138,6 @@ export default {
     userIsAuthenticated () {
       let user = this.$store.getters.user
       if (user !== undefined || user !== null) {
-        console.log(user)
         return this.userIsAuthenticated
       }
     },
@@ -147,7 +146,6 @@ export default {
     },
     onfilePick (e) {
       const file = e.target.files[0]
-      console.log(file)
       if (file !== undefined) {
         const fileName = file.name
         if (fileName.lastIndexOf('.') <= 0) {
@@ -172,7 +170,6 @@ export default {
         dataOfBirth: this.dataOfBirth,
         profileImage: this.profileImage
       }
-      console.log('data', data)
       if (this.gender !== '' && this.name !== '' && this.userName !== '' &&
             this.dataOfBirth !== '' && this.profileImage !== null && this.profileImage !== undefined) {
         this.$store.dispatch('updateProfile', data)
